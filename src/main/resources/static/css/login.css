@@ -1,0 +1,81 @@
+/* Base styles */
+body {
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+}
+
+/* Container for the login card */
+.login-container {
+    height: 100dvh;
+    width: 100%;
+}
+
+/* Styling for the login card */
+.login-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Header styling */
+.login-card h1 {
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333333;
+}
+
+/* Paragraph styling */
+.login-card p {
+    font-weight: 400;
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #666666;
+}
+
+/* Styling for the Google button */
+.google-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4285f4;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.google-btn img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+/* Hover effect for the button */
+.google-btn:hover {
+    background-color: #357ae8;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 30px;
+    }
+
+    .login-card h1 {
+        font-size: 20px;
+    }
+
+    .google-btn {
+        padding: 8px 16px;
+    }
+}
