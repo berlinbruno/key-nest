@@ -1,6 +1,9 @@
 spring:
   application:
-    name: key-nest
+    name: key_nest
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
   security:
     oauth2:
       client:
@@ -9,7 +12,14 @@ spring:
             clientId: ${GOOGLE_CLIENT_ID}
             clientSecret: ${GOOGLE_CLIENT_SECRET}
             scope: profile,email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-name: Google
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
 
   thymeleaf:
     prefix: classpath:/templates/
