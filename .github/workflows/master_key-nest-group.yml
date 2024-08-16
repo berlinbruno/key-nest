@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - Key-Nest
+name: Build and deploy JAR app to Azure Web App - Key-Nest-Group
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     env:
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
@@ -37,14 +37,14 @@ jobs:
           path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
-
+  
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -54,15 +54,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_32A8B5C6580E467C9D6256C57D941663 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0766980B331A41C08A7373C578E8CCF4 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A7163C77851643C48BC57C47BB3B6036 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C733C3988F894E9C879E899A3B719ACC }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EA8D46E16BEC42BD9EE6FF9D291CC02E }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_BBCAD50F7DC64E3CAF8985C4B338CFD0 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'Key_Nest'
+          app-name: 'Key-Nest-Group'
           slot-name: 'Production'
           package: '*.jar'
           
