@@ -1,6 +1,6 @@
 spring:
   application:
-    name: key_nest
+    name: key-nest
   data:
     mongodb:
       uri: ${MONGODB_URI}

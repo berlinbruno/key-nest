@@ -62,7 +62,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'Key_Nest'
+          app-name: 'Key-Nest'
           slot-name: 'Production'
           package: '*.jar'
           
