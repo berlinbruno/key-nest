@@ -24,28 +24,29 @@ public class HomeController {
         this.secretService = secretService;
     }
 
+    private String getUserId(Authentication authentication) {
+        if (authentication.getPrincipal() instanceof OAuth2User oauth2User) {
+            return oauth2User.getAttribute("sub");
+        }
+        return null;
+    }
 
     @GetMapping("/")
     public String home(Authentication authentication, Model model) {
-        // Check if the authentication object is of type OAuth2User
-        if (authentication.getPrincipal() instanceof OAuth2User oauth2User) {
+        String userId = getUserId(authentication);
+        if (userId != null) {
+            String name = ((OAuth2User) authentication.getPrincipal()).getAttribute("name");
+            String picture = ((OAuth2User) authentication.getPrincipal()).getAttribute("picture");
 
-            String id = oauth2User.getAttribute("sub"); // User's unique ID
-            String name = oauth2User.getAttribute("name");
-            String picture = oauth2User.getAttribute("picture"); // Profile image URL
-
-            // Add these details to the model
             model.addAttribute("name", name);
             model.addAttribute("picture", picture);
 
-
-            List<Secret> secrets = secretService.findAllSecretsByUserId(id);
-
+            List<Secret> secrets = secretService.findAllSecretsByUserId(userId);
             model.addAttribute("totalSecrets", secrets.size());
             model.addAttribute("secrets", secrets);
         }
 
-        return "index"; // Return the name of the view
+        return "index";
     }
 
     @PostMapping("/addSecret")
@@ -55,14 +56,15 @@ public class HomeController {
                             @RequestParam String category,
                             @RequestParam(required = false) String notes,
                             Authentication authentication) {
-        if (authentication.getPrincipal() instanceof OAuth2User oAuth2User) {
+        String userId = getUserId(authentication);
+        if (userId != null) {
             Secret secret = new Secret();
             secret.setSecretName(secretName);
             secret.setName(name);
             secret.setValue(value);
             secret.setCategory(category);
             secret.setNotes(notes);
-            secret.setUserId(oAuth2User.getAttribute("sub"));
+            secret.setUserId(userId);
             secretService.saveSecret(secret);
         }
 
@@ -70,21 +72,22 @@ public class HomeController {
     }
 
     @PostMapping("/updateSecret")
-    public String updateSecret(@RequestParam String id,
+    public String updateSecret(@RequestParam String secretName,
+                               @RequestParam String id,
                                @RequestParam String name,
                                @RequestParam String value,
                                @RequestParam String category,
-                               @RequestParam(required = false) String notes
-    ) {
+                               @RequestParam(required = false) String notes) {
         Secret secret = new Secret();
+        secret.setSecretName(secretName);
         secret.setName(name);
         secret.setValue(value);
         secret.setCategory(category);
         secret.setNotes(notes);
         secretService.updateSecret(secret, id);
+
         return "redirect:/";
     }
-
 
     @PostMapping("/deleteSecret/{id}")
     public String deleteSecret(@PathVariable String id) {
@@ -94,7 +97,6 @@ public class HomeController {
 
     @GetMapping("/login")
     public String login() {
-        return "login"; // This will map to the login.html template
+        return "login";
     }
-
 }

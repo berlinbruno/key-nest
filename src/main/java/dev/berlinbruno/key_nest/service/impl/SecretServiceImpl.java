@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,31 +20,32 @@ public class SecretServiceImpl implements SecretService {
         this.secretRepository = secretRepository;
     }
 
+    @Override
     public List<Secret> findAllSecretsByUserId(String userId) {
         return secretRepository.findAllByUserId(userId, Sort.by(Sort.Order.desc("lastModifiedAt")));
     }
 
+    @Override
     public void saveSecret(Secret secret) {
         secretRepository.save(secret);
-        log.info("Created - {}", secret.getId());
+        log.info("Saved - {}", secret.getId());
     }
 
     @Override
     public void updateSecret(Secret secret, String id) {
-        Optional<Secret> optionalSecret = secretRepository.findById(id);
-        if (optionalSecret.isPresent()) {
-            Secret updatedSecret = optionalSecret.get();
-            updatedSecret.setName(secret.getName());
-            updatedSecret.setValue(secret.getValue());
-            updatedSecret.setCategory(secret.getCategory());
-            updatedSecret.setNotes(secret.getNotes());
+        secretRepository.findById(id).ifPresent(existingSecret -> {
+            existingSecret.setSecretName(secret.getSecretName());
+            existingSecret.setName(secret.getName());
+            existingSecret.setValue(secret.getValue());
+            existingSecret.setCategory(secret.getCategory());
+            existingSecret.setNotes(secret.getNotes());
 
-            secretRepository.save(updatedSecret);
+            secretRepository.save(existingSecret);
             log.info("Updated - {}", id);
-        }
+        });
     }
 
-
+    @Override
     public void deleteSecret(String id) {
         secretRepository.deleteById(id);
         log.info("Deleted - {}", id);
