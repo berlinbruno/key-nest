@@ -1,4 +1,4 @@
-# KeyNest
+# KeyNest - Secret Manager
 
 **KeyNest** is a secure and intuitive password manager application built using Spring Boot, Thymeleaf, OAuth for authentication, and MongoDB for data storage. This project aims to provide a user-friendly platform where users can securely store and manage their passwords, ensuring their digital assets are protected.
 
