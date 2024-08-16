@@ -13,6 +13,11 @@ jobs:
   build:
     runs-on: windows-latest
 
+    env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+
     steps:
       - uses: actions/checkout@v4
 
